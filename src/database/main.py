@@ -18,29 +18,29 @@ create_hero()
 
 #READ
 def show_all_heros():
+    heros = []
     query = """
         SELECT * from heroes
+        ORDER BY id;
 """
+    
     data = execute_query(query)
-    if data:
-        for row in data:
-            id, name, about_me, biography = row
-            print(f"Hero ID: {id}, Name: {name}, Ability: {about_me}, Bio: {biography}")
+    for hero in data:
+        heros.append(hero[1])
+    print(heros)
 
 show_all_heros()
 
 #UPDATE
 
-def update_about_me(about_me):
-    new_about_me = input("Change your about me (if you discovered or lost a power) ")
-    query = """
-    UPDATE heroes
-    SET about_me = %s
-    WHERE %s = heroes.name
+def update_about_me(id, new_about_me):
+    update_query = """
+    UPDATE heroes SET about_me = %s WHERE id = %s;
     """
-    execute_query(query, (new_about_me, hero))
+    params = (new_about_me, id)
+    execute_query(update_query, params)
 
-update_about_me()
+update_about_me(3, "I have heat vision, super strength, and can fly" )
 
 #DELETE
 
